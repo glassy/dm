@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html ng-app = "dmApp" ng-controller = "mainCtrl">
+
+<head>
+  <meta charset="utf-8">   
+
+  <style type="text/css">
+
+      input[type=radio]:not(old){
+        width   : 28px;
+        margin  : 0;
+        padding : 0;
+        opacity : 0;
+        position: relative;
+        top:-3px;
+        left: -2px;
+        z-index: 1;
+      } 
+
+      input[type=radio] + label {        
+        display      : inline-block;
+        margin-left  : -34px;
+        width: 16px;
+        height: 16px;
+        line-height  : 16px;
+      }
+
+      #resault {
+        position: fixed;
+        top: 0px;
+        left: 50%;
+        width: 100px;
+        height: 100px;
+      }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <div>
+
+    <div id = "resault" ng-style = "{'background-color': (color || 'tranparent')}">
+    </div>
+
+    <span ng-repeat = "j in [] | range:100">
+
+      <br ng-show = "!(j % 10)">
+
+          <input id = "option{{j}}" ng-model = "$parent.color" ng-value="j | toHsla"
+
+
+                type = "radio" name = "test" >
+          <label for="option{{j}"
+                ng-style = "
+              {'background-color': (j | toHsla)}"></label>
+
+    </span>
+
+  </div>
+
+<script src="bower_components/angular/angular.min.js"></script>
+
+<script>
+  angular.module("dmApp",[])
+      .filter('range', myRange)
+      .filter('toHsla' , myHsla);
+
+  function mainCtrl ($scope) {
+    $scope.Math = window.Math
+  }
+
+  function myRange() {
+      return function(input, total) {
+        total = parseInt(total);
+        for (var i=0; i<total; i++)
+          input.push(i);
+        return input;
+      };
+  }
+
+  function myHsla(){
+    return function (j) {
+      return 'hsla(' + j * 36 + ', '  + (100 - Math.floor(j / 10) * 10) + '%, 50%, 1)';
+    }
+  }
+
+</script>
+
+
+
+</body>
+</html>
